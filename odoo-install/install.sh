@@ -79,6 +79,8 @@ cd l10n-spain
 rm *.* LICENSE
 cd ..
 
+
+cd $diraddons
 mkdir OCA
 
 cd OCA
@@ -108,11 +110,13 @@ for file in $files
 
 cd ..
 
+cd $diraddons
 mkdir others-addons
 
 cd others-addons
 
 ln -s $dirmodulos/Openworx/backend_theme/backend_theme_v11 backend_theme_v11
 ln -s $dirmodulos/cytex124/odoo-drag-and-drop/drag-and-drop drag-and-drop
+ln -s $dirmodulos/cesarsc79/odoo-modules/all all
 
 cp $dirconfig/* $dirdeployment
