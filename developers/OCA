@@ -6,8 +6,10 @@ account-invoicing
 account-payment
 bank-payment
 community-data-files
+connector-telephony
 contract
 crm
+data-protection
 hr
 l10n-spain
 mis-builder
@@ -23,3 +25,6 @@ server-tools
 server-ux
 social
 web
+website
+website-cms
+website-themes
