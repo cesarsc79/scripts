@@ -11,6 +11,7 @@ dirdeployment=$dirhome/deployment
 diraddons=$dirdeployment/addons
 dirconfig=$dirscripts/config
 rutagit=https://github.com
+odooversion=12.0
 
 cd $dirdevelopers
 developers=$(ls)
@@ -24,39 +25,24 @@ mkdir $dirmodulos
 cd $dirmodulos
 
 for dev in $developers
-
     do
         mkdir $dev
         cd $dev
-
         repos=$(cat $dirdevelopers/$dev)
-
         for repo in $repos
-
             do
-                git clone $rutagit/$dev/$repo.git -b 11.0 --depth=1
+                git clone $rutagit/$dev/$repo.git -b $odooversion --depth=1
                 cd $repo
-
                 if [ -f requirements.txt ]
-
                     then
-
                         sudo -H pip3 install -r requirements.txt
-
                     else
-
                         echo "No existe el archivo requirements.txt"
-
                 fi
-
                 cd ..
-
             done
-
-        cd ..
-            
+        cd ..         
     done
-
 
 if [ -d $dirdeployment ]
     then
@@ -66,57 +52,83 @@ fi
 mkdir $dirdeployment
 cd $dirdeployment
 
-ln -s $dirmodulos/OCA/OCB odoo
+mkdir odoo
+cd odoo
+
+enlaces=$(ls /home/$user/modulos/OCA/OCB)
+
+for enlace in $enlaces
+        do
+                ln -s /home/$user/modulos/OCA/OCB/$enlace
+        done
+cd ..
 
 mkdir $diraddons
-
 cd $diraddons
 
-ln -s $dirmodulos/OCA/OCB/addons odoo-default-addons
-ln -s $dirmodulos/OCA/l10n-spain l10n-spain
+############################################################################
+mkdir odoo-default-addons
+cd odoo-default-addons
 
+enlaces=$(ls /home/$user/modulos/OCA/OCB/addons)
+
+for enlace in $enlaces
+        do
+                ln -s /home/$user/modulos/OCA/OCB/addons/$enlace
+        done
+cd ..
+
+mkdir l10n-spain
 cd l10n-spain
-rm *.* LICENSE
+
+enlaces=$(ls /home/$user/modulos/OCA/l10n-spain)
+
+for enlace in $enlaces
+        do
+                ln -s /home/$user/modulos/OCA/l10n-spain/$enlace
+        done
 cd ..
 
 
-cd $diraddons
 mkdir OCA
-
 cd OCA
-repos=$(ls $dirmodulos/OCA)
 
-for repo in $repos
+enlaces=$(ls /home/$user/modulos/OCA)
 
-    do
-        modulos=$(ls $dirmodulos/OCA/$repo)
+for enlace in $enlaces
+        do
+                ln -s /home/$user/modulos/OCA/$enlace
+        done
 
-        for modulo in $modulos
-
-            do
-                ln -s $dirmodulos/OCA/$repo/$modulo $modulo
-            done
-    done
-
-rm -rf l10n_es*
-rm *.*
-
-files=$(ls $dirmodulos/OCA/OCB)
-
-for file in $files
-    do
-        rm -rf $file
-    done
+rm l10n-spain
+rm OCB
 
 cd ..
 
-cd $diraddons
-mkdir others-addons
 
+mkdir others-addons
 cd others-addons
 
-ln -s $dirmodulos/Openworx/backend_theme/backend_theme_v11 backend_theme_v11
-ln -s $dirmodulos/cytex124/odoo-drag-and-drop/drag-and-drop drag-and-drop
-ln -s $dirmodulos/cesarsc79/odoo-modules/all all
+enlaces=$(ls /home/$user/modulos)
+
+for enlace in $enlaces
+        do
+                if [ $enlace = OCA ]
+                    then
+                        echo "paso de OCA"
+                else
+                    repos=$(ls /home/$user/modulos/$enlace)    
+                    for repo in $repos
+                        do
+                            modulos=$(ls /home/$user/modulos/$enlace/$repo)
+                            for modulo in $modulos
+                                do
+                                    ln -s /home/$user/modulos/$enlace/$repo/$modulo
+                                done                                
+                        done
+                fi
+        done
+cd ..
+#########################################################################################
 
 cp $dirconfig/* $dirdeployment
