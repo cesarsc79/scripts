@@ -11,7 +11,7 @@ dirdeployment=$dirhome/deployment
 diraddons=$dirdeployment/addons
 dirconfig=$dirscripts/config
 rutagit=https://github.com
-odooversion=12.0
+odooversion=11.0
 
 cd $dirdevelopers
 developers=$(ls)
