@@ -97,7 +97,11 @@ enlaces=$(ls /home/$user/modulos/OCA)
 
 for enlace in $enlaces
         do
-                ln -s /home/$user/modulos/OCA/$enlace
+            modulos=$(ls /home/$user/modulos/OCA/$enlace)    
+            for modulo in $modulos
+                do
+                    ln -s /home/$user/modulos/OCA/$enlace/$modulo                                
+                done
         done
 
 rm l10n-spain
